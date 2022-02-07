@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-and-publish:
     docker: 
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -9,11 +9,6 @@ jobs:
       - run:
           name: Build Image
           command: docker build -t ${IMAGE_NAME}:${CIRCLE_TAG} .
-  publish:
-    docker: 
-      - image: circleci/buildpack-deps:stretch
-    steps:
-      - setup_remote_docker
       - run:
           name: Publish to DockerHub
           command: | 
@@ -24,20 +19,11 @@ workflows:
   version: 2
   build-publish:
     jobs:
-      - build:
+      - build-and-publish:
           filters:
             tags: 
               only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
-      - publish:
-          requires: 
-            - build
-          filters:
-            tags: 
-              only: /^\d+\.\d+\.\d+$/
-            branches:
-              ignore: /.*/
-
     
     
