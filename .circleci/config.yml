@@ -8,7 +8,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Image
-          command: docker build ${IMAGE_NAME}:${IMAGE_TAG}
+          command: docker build ${IMAGE_NAME}:${CIRCLE_TAG}
   publish:
     docker: 
       - image: circleci/buildpack-deps:stretch
@@ -18,7 +18,7 @@ jobs:
           name: Publish to DockerHub
           command: | 
             echo ${PASSWORD} | docker login -u ${LOGIN} --password-stdin
-            docker push ${IMAGE_NAME}:${IMAGE_TAG}
+            docker push ${IMAGE_NAME}:${CIRCLE_TAG}
   
 workflows:
   version: 2
