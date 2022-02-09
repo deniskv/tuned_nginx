@@ -12,6 +12,7 @@ jobs:
       - run:
           name: Publish to DockerHub
           command: | 
+            echo $LOGIN
             echo ${PASSWORD} | docker login -u ${LOGIN} --password-stdin
             docker push ${IMAGE_NAME}:${CIRCLE_TAG}
   
